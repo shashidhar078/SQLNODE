@@ -1,4 +1,26 @@
 const { faker } = require('@faker-js/faker');
+const mysql =require('mysql2');
+
+// Create the connection to database
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  database: 'sigma',
+  password: 'root',
+});
+
+try{
+    connection.query("SHOW TABLES",(err,results)=>{
+    if(err) throw err;
+    console.log(results);
+    });
+}
+catch(err)
+{
+    console.log(err);
+}
+
+connection.end();
 
 let createRandomUser = () => {
   return {
@@ -9,4 +31,4 @@ let createRandomUser = () => {
   };
 }
 
-console.log(createRandomUser());
+// console.log(createRandomUser());
