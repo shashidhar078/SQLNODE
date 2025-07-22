@@ -9,18 +9,47 @@ const connection = mysql.createConnection({
   password: 'root',
 });
 
+// try{
+//     connection.query('Select userEmail from user where userName="shashi"',(err,results)=>{
+//     if(err) throw err;
+//     console.log(results);
+//     console.log(results.length);
+//     console.log(results[0]);
+//     console.log(results[1]);
+//     });
+// }
+//inserting data into table only single 
+// let q="Insert into user values(?,?,?,?)";
+// let user=[2,"sai charan","charan@gmail.com","charan123"];
+// try{
+//     connection.query(q,user,(err,results)=>{
+//     if(err) throw err;
+//     console.log(results);
+//     console.log(results.length);
+//     console.log(results[0]);
+//     console.log(results[1]);
+//     });
+// }
+// catch(err)
+// {
+//     console.log(err);
+// }
+
+// inserting multiple data 
+//we are actually keeping static our own data using placeholders
+let q="insert into user values ?";
+let users=[[3,"vignesh","vignesh@gmail.com","vignesh123"],
+[4,"ram charan","ram@gmail.com","ram123"]];
+
 try{
-    connection.query("SHOW TABLES",(err,results)=>{
+    connection.query(q,[users],(err,results)=>{
     if(err) throw err;
     console.log(results);
-    console.log(results.length);
-    console.log(results[0]);
-    console.log(results[1]);
-    });
+  });
 }
 catch(err)
 {
-    console.log(err);
+  console.log(err);
 }
 
 connection.end();
