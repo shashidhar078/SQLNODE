@@ -37,13 +37,40 @@ const connection = mysql.createConnection({
 
 // inserting multiple data 
 //we are actually keeping static our own data using placeholders
+// let q="insert into user values ?";
+// let users=[[3,"vignesh","vignesh@gmail.com","vignesh123"],
+// [4,"ram charan","ram@gmail.com","ram123"]];
+
+// try{
+//     connection.query(q,[users],(err,results)=>{
+//     if(err) throw err;
+//     console.log(results);
+//   });
+// }
+// catch(err)
+// {
+//   console.log(err);
+// }
+//now lets insert bulk data using faker
+let createRandomUser = () => {
+  return [
+     faker.string.uuid(),
+     faker.internet.username(), // before version 9.1.0, use userName()
+     faker.internet.email(),
+     faker.internet.password(),
+  ];
+}
+
 let q="insert into user values ?";
-let users=[[3,"vignesh","vignesh@gmail.com","vignesh123"],
-[4,"ram charan","ram@gmail.com","ram123"]];
+let data=[];
+for(let i=0;i<100;i++)
+{
+  data.push(createRandomUser());
+}
 
 try{
-    connection.query(q,[users],(err,results)=>{
-    if(err) throw err;
+    connection.query(q,[data],(err,results)=>{
+    if(err)  throw err;
     console.log(results);
   });
 }
@@ -51,16 +78,8 @@ catch(err)
 {
   console.log(err);
 }
-
 connection.end();
 
-let createRandomUser = () => {
-  return {
-    userId: faker.string.uuid(),
-    username: faker.internet.username(), // before version 9.1.0, use userName()
-    email: faker.internet.email(),
-    password: faker.internet.password(),
-  };
-}
+
 
 // console.log(createRandomUser());
