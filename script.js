@@ -88,7 +88,22 @@ app.get("/user/:id/edit",(req,res)=>{
 });
 
 app.patch("/user/:id",(req,res)=>{
-    res.send("updated");
+     let {id} = req.params;
+     let name = req.body.userName;
+     let q=`update user set userName= '${name}' where id='${id}'`;
+        try{
+          connection.query(q,(err,results)=>{
+          if(err)  throw err;
+          console.log(results);
+          res.send("successfully updated");
+        });
+    }
+    catch(err)
+    {
+        console.log(err);
+        res.send(err);
+    }
+    
 });
 
 const port=8080;
