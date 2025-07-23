@@ -4,6 +4,10 @@ const app=express();
 const { faker } = require('@faker-js/faker');
 const mysql =require('mysql2');
 const path=require('path');
+const methodOverride=require('method-override');
+
+app.use(methodOverride('_method'));
+app.use(express.urlencoded({extended:true}));
 
 // Create the connection to database
 const connection = mysql.createConnection({
@@ -51,7 +55,6 @@ app.get("/user",(req,res)=>{
         try{
           connection.query(q,(err,users)=>{
           if(err)  throw err;
-          console.log(users);
             res.render("showusers.ejs",{users});
         });
     }
@@ -62,6 +65,32 @@ app.get("/user",(req,res)=>{
     }
 
 });
+
+//Edit route
+app.get("/user/:id/edit",(req,res)=>{
+    let {id} = req.params;
+    console.log(id);
+    let q=`select * from user where id = '${id}'`;
+        try{
+          connection.query(q,(err,results)=>{
+          if(err)  throw err;
+          console.log(results);
+          let user=results[0];
+            res.render("edit.ejs",{user});
+        });
+    }
+    catch(err)
+    {
+        console.log(err);
+        res.send(err);
+    }
+    
+});
+
+app.patch("/user/:id",(req,res)=>{
+    res.send("updated");
+});
+
 const port=8080;
 
 app.listen(port,()=>{
