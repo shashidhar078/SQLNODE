@@ -25,6 +25,7 @@ let createRandomUser = () => {
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"/views"));
 
+//Home route
 app.get("/",(req,res)=>{
     let q="select count(*) from user";
         try{
@@ -43,6 +44,24 @@ app.get("/",(req,res)=>{
         res.send(err);
     }
 });
+
+//show users 
+app.get("/user",(req,res)=>{
+    let q="select * from user";
+        try{
+          connection.query(q,(err,users)=>{
+          if(err)  throw err;
+          console.log(users);
+            res.render("showusers.ejs",{users});
+        });
+    }
+    catch(err)
+    {
+        console.log(err);
+        res.send(err);
+    }
+
+});
 const port=8080;
 
 app.listen(port,()=>{
@@ -54,3 +73,5 @@ app.listen(port,()=>{
 
 
 // connection.end();
+//There is no need of connection.end() since connection will be closed
+//automatically after the termination of the function or route responsible
