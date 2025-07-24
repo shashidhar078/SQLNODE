@@ -9,7 +9,7 @@
     <h1>You are about to edit you username : <%= user.userEmail %></h1>
     <form method="post" action="/user/<%= user.id %>?_method=PATCH">
         <textarea name="userName"><%= user.userName %></textarea>
-        <input type="password" placeholder="enter your password">
+        <input type="password" name="password" placeholder="enter your password">
         <button>edit</button>
     </form>
 </body>

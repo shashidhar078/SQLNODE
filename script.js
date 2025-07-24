@@ -90,27 +90,51 @@ app.get("/user/:id/edit",(req,res)=>{
 app.patch("/user/:id",(req,res)=>{
      let {id} = req.params;
      let name = req.body.userName;
-     let q=`update user set userName= '${name}' where id='${id}'`;
+     let pass = req.body.password;
+     console.log(pass);
+      let q=`select password from user where id = '${id}'`;
         try{
-          connection.query(q,(err,results)=>{
-          if(err)  throw err;
-          console.log(results);
-          res.send("successfully updated");
+            connection.query(q,(err,results)=>{
+            if(err)  throw err;
+            console.log(results);
+            let password=results[0].password;
+            console.log(password);
+            if(pass!=password)
+            {
+                res.send("incorrect password");
+            }
+            else
+            {
+                let q=`update user set userName= '${name}' where id='${id}'`;
+                try{
+                    connection.query(q,(err,results)=>{
+                    if(err)  throw err;
+                    console.log(results);
+                    res.redirect("/user");
+                });
+                }
+                catch(err)
+                {
+                    console.log(err);
+                    res.send(err);
+                }
+            }
         });
     }
-    catch(err)
-    {
-        console.log(err);
-        res.send(err);
-    }
     
-});
+        catch(err)
+        {
+            console.log(err);
+            res.send(err);
+        }
+    });
+
 
 const port=8080;
 
 app.listen(port,()=>{
     console.log(`app listens on ${port}`);
-})
+});
 
 
 
